@@ -1,0 +1,44 @@
+
+
+int ledPin = 13; // Currently just single LED in pin + ground, change this to LED strip in main code
+int blue_button = 12;   // input pin for blue button
+int green_button = 8;   // input pin for green button
+int yellow_button = 7;   // input pin for yellow button
+int red_button = 4;   // input pin for red button
+int val = 0;     // variable for reading the pin status
+
+void setup() {
+
+  //Honestly the code works the same without any of this setup but I've kept it just in case.
+  
+  pinMode(blue_button, OUTPUT);  // declare LED as output
+  pinMode(blue_button, INPUT);    // declare pushbutton as input
+  
+  pinMode(green_button, OUTPUT);  // declare LED as output
+  pinMode(green_button, INPUT);    // declare pushbutton as input
+  
+  pinMode(yellow_button, OUTPUT);  // declare LED as output
+  pinMode(yellow_button, INPUT);    // declare pushbutton as input
+  
+  pinMode(red_button, OUTPUT);  // declare LED as output
+  pinMode(red_button, INPUT);    // declare pushbutton as input
+}
+
+void loop(){
+        if(digitalRead(yellow_button) == HIGH){
+        digitalWrite(ledPin, LOW);  // turn LED OFF
+  }
+  else if(digitalRead(red_button) == HIGH){
+        digitalWrite(ledPin, LOW);  // turn LED OFF
+  }
+  else if(digitalRead(blue_button) == HIGH){
+        digitalWrite(ledPin, LOW);  // turn LED OFF
+  }
+  else if(digitalRead(green_button) == HIGH){
+        digitalWrite(ledPin, LOW);  // turn LED OFF
+  }
+  else {
+    digitalWrite(ledPin, HIGH);  // turn LED ON
+  }
+}
+ 
