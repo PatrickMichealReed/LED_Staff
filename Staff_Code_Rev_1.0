@@ -27,7 +27,7 @@
 #include <power_mgt.h>
 
 #define LED_PIN     5
-#define NUM_LEDS    20
+#define NUM_LEDS    31
 #define BRIGHTNESS  64
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
@@ -52,7 +52,15 @@ CRGB leds[NUM_LEDS];
 // Some notes on the more abstract 'theory and practice' of
 // FastLED compact palettes are at the bottom of this file.
 
+int blue_button = 8;   // input pin for blue button
+int green_button = 7;   // input pin for green button
+int yellow_button = 4;   // input pin for yellow button
+int red_button = 2;   // input pin for red button
 
+bool blue_button_pushed = false;
+bool green_button_pushed = false;
+bool yellow_button_pushed = false;
+bool red_button_pushed = false;   //stores button inputs
 
 CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
@@ -68,12 +76,47 @@ void setup() {
     
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
+
+    pinMode(blue_button, OUTPUT);  // declare LED as output
+    pinMode(blue_button, INPUT);    // declare pushbutton as input
+  
+    pinMode(green_button, OUTPUT);  // declare LED as output
+    pinMode(green_button, INPUT);    // declare pushbutton as input
+  
+    pinMode(yellow_button, OUTPUT);  // declare LED as output
+    pinMode(yellow_button, INPUT);    // declare pushbutton as input
+  
+    pinMode(red_button, OUTPUT);  // declare LED as output
+    pinMode(red_button, INPUT);    // declare pushbutton as input
 }
 
 
 void loop()
 {
-    ChangePalettePeriodically();
+   // ChangePalettePeriodically();
+
+        monitorInput();
+        
+        if(blue_button_pushed)
+        {
+        currentPalette = PartyColors_p;
+        currentBlending = LINEARBLEND;
+        }
+        else if(green_button_pushed)
+        {
+        currentPalette = CloudColors_p;
+        currentBlending = LINEARBLEND;
+        }
+        else if(yellow_button_pushed)
+        {
+        currentPalette = RainbowColors_p;
+        currentBlending = LINEARBLEND;
+        }
+        else if(red_button_pushed)
+        {
+        SetupTotallyRandomPalette();
+        currentBlending = LINEARBLEND;
+        }
     
     static uint8_t startIndex = 0;
     startIndex = startIndex + 1; /* motion speed */
@@ -82,6 +125,38 @@ void loop()
     
     FastLED.show();
     FastLED.delay(1000 / UPDATES_PER_SECOND);
+}
+
+void monitorInput()
+{
+  if(digitalRead(blue_button) == HIGH)
+  {
+        blue_button_pushed = true;
+        green_button_pushed = false;
+        yellow_button_pushed = false;
+        red_button_pushed = false;
+  }
+  else if(digitalRead(green_button) == HIGH)
+  {
+        blue_button_pushed = false;
+        green_button_pushed = true;
+        yellow_button_pushed = false;
+        red_button_pushed = false;
+  }
+  else if(digitalRead(yellow_button) == HIGH)
+  {
+        blue_button_pushed = false;
+        green_button_pushed = false;
+        yellow_button_pushed = true;
+        red_button_pushed = false;
+  }
+  else if(digitalRead(red_button) == HIGH)
+  {
+        blue_button_pushed = false;
+        green_button_pushed = false;
+        yellow_button_pushed = false;
+        red_button_pushed = true;
+  }
 }
 
 void FillLEDsFromPaletteColors( uint8_t colorIndex)
